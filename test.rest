@@ -1,0 +1,2 @@
+GET http://localhost:1234/products?page=2&size=2
+###
