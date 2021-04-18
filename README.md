@@ -1,4 +1,4 @@
-# Getting Started with react-ts-tutorial-ecom-shop-udemy-master
+# Commercepree
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). This is the starting project
 pint for the React Typescript Tutorial Ecommerce Shop in Udemy.
