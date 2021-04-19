@@ -1,3 +1,5 @@
+import { getProductOptions } from "../data/api";
+
 export interface Action {
   readonly type: string;
   readonly payload: any;
@@ -14,7 +16,7 @@ export interface AddProductAction extends Action {
 
 export interface searchProductAction extends Action {
   payload: {
-    filterOptions: ProductsFilterOptions;
+    searchResults: ProductModel[];
   };
 }
 
@@ -27,9 +29,13 @@ export const AddProduct = (newProduct: ProductModel): AddProductAction => ({
 
 export const SearchProduct = (
   filterOptions: ProductsFilterOptions
-): searchProductAction => ({
-  type: TOGGLE_ITEM,
-  payload: {
-    filterOptions: filterOptions,
-  },
-});
+): searchProductAction => {
+  getProductOptions({ ...filterOptions }).then(({ data }) => {});
+
+  return {
+    type: TOGGLE_ITEM,
+    payload: {
+      searchResults: [],
+    },
+  };
+};

@@ -9,11 +9,10 @@ import {
   Grid,
   Header,
   Icon,
-  Image,
-  Menu,
   Segment,
   Sidebar,
 } from 'semantic-ui-react'
+var _ = require('lodash/core');
 
 const AllProductsPage = () => {
 
@@ -23,7 +22,6 @@ const AllProductsPage = () => {
   return (
     <Grid columns={1}>
       
-
       <Grid.Column>
         <Sidebar.Pushable as={Segment}>
           <Sidebar
