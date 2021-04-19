@@ -1,15 +1,35 @@
-import React, { FunctionComponent }  from 'react'
-import { Card, Image } from 'semantic-ui-react' 
+import React, { useContext, useEffect, useCallback,useState } from  'react'
+import { Card, Segment, Header, Icon } from 'semantic-ui-react' 
 import  ProductCard  from './ProductCard'
+import { AppContext } from "../context/appContext";
 
 
-const BestSellers :FunctionComponent = () => {
+const BestSellers : React.FC = () => {
+
+    const {state} = useContext(AppContext)
+
     return (
-        <Card.Group centered>
-            <ProductCard 
-                url="http://localhost:1234/public/images/Formal%20Dress%20Shirts%20Casual%20Long%20Sleeve%20Slim%20Fit%20-%20Violet.png"
-                name="Some Product"/>
-        </Card.Group>
+        <div>
+        <Segment basic>
+            <Header as='h2' icon
+                textAlign='center'
+                style={{marginBottom:'1em'}} >
+                <Icon name='star outline' circular centered/>
+                <Header.Content centered>Best Sellers</Header.Content>
+            </Header>
+            
+            <Card.Group centered>
+                {state.featuredProducts.map(({title, variants, id})=> {
+                    return (
+                    <ProductCard 
+                            key={id}
+                            url={variants[0].image}
+                            name={title}/>
+                    )
+                })}
+            </Card.Group>
+        </Segment>
+        </div>
     )
 }
 

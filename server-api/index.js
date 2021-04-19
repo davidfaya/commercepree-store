@@ -11,11 +11,24 @@ const products = JSON.parse(
   fs.readFileSync(productsJsonPath, { encoding: "utf-8" })
 );
 
+const productsFilterJsonPath = path.join(__dirname, "/productsFilter.json");
+const productsFilters = JSON.parse(
+  fs.readFileSync(productsFilterJsonPath, { encoding: "utf-8" })
+);
+
 app.use(bodyParser.json());
 
 /** Enable Cors */ app.use(cors());
 
 app.use("/public", express.static("public"));
+
+/** Get Products Filters
+ * Query params - page/size
+ * http://localhost:1234/product-filters
+ */
+app.get("/product-filters", (req, res) => {
+  res.json({ productsFilters });
+});
 
 /** Get All Products
  * Query params - page/size
@@ -24,17 +37,22 @@ app.use("/public", express.static("public"));
  * http://localhost:1234/products
  */
 app.get("/products", (req, res) => {
-  const { page, size } = req.query;
+  const { page, size, category } = req.query;
   const data = {};
   let productsToReturn = [];
-  if ((page && size) || size) {
+
+  if ((page && size) || size || category) {
     let currentPage = 1;
     let currentSize = 0;
     const pageInt = parseInt(page) || 1;
-    const sizeInt = parseInt(size);
+    const sizeInt = parseInt(size) || products.length;
     data.page = pageInt;
 
     products.forEach((product) => {
+      if (category && !hasProductInCategory(category, product.category)) {
+        return;
+      }
+
       if (currentSize === sizeInt) {
         currentPage++;
         currentSize = 0;
@@ -48,6 +66,8 @@ app.get("/products", (req, res) => {
 
       currentSize++;
     });
+
+    data.totalPages = currentPage;
   } else {
     productsToReturn = products;
   }
@@ -110,5 +130,27 @@ app.delete("/product/:productId", (req, res) => {
     res.json({ productId });
   }
 });
+
+const hasProductInCategory = (inputCategory, productCategories) => {
+  //console.log(inputCategory, productCategories);
+  const inputCategoryArr =
+    typeof inputCategory === "string" ? [inputCategory] : inputCategory;
+  const inputCategoryArrLowerCase = inputCategoryArr
+    .toString()
+    .toLowerCase()
+    .split(",");
+  let hasSameCategory = false;
+  productCategories.forEach((productCategory) => {
+    //console.log(inputCategoryArrLowerCase);
+    for (productCategory of productCategories) {
+      if (inputCategoryArrLowerCase.includes(productCategory.toLowerCase())) {
+        hasSameCategory = true;
+        break;
+      }
+    }
+  });
+
+  return hasSameCategory;
+};
 
 app.listen(1234);

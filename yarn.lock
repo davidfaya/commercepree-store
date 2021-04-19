@@ -1890,7 +1890,7 @@
     "@types/react" "*"
     "@types/react-router" "*"
 
-"@types/react-router@*":
+"@types/react-router@*", "@types/react-router@^5.1.13":
   "integrity" "sha512-ZIuaO9Yrln54X6elg8q2Ivp6iK6p4syPsefEYAhRDAoqNh48C8VYUmB9RkXjKSQAJSJV0mbIFCX7I4vZDcHrjg=="
   "resolved" "https://registry.npmjs.org/@types/react-router/-/react-router-5.1.13.tgz"
   "version" "5.1.13"

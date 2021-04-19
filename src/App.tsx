@@ -1,24 +1,35 @@
 import React , {useReducer, useEffect} from 'react';
-import logo from './logo.svg';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import AllProductsPage from './pages/AllProductsPage';
 import CheckoutPage from './pages/CheckoutPage';
-import {ProductReducer, AppContext} from './context/appContext'
+import {ProductReducer, AppContext, initialState} from './context/appContext'
 import { ROUTE } from './types/route';
 import  TopNav  from './components/TopNav'
 import { Container } from 'semantic-ui-react'
-import { INIT_PRODUCTS } from './types/const'
+import { INIT_PRODUCTS, INIT_FEATURED_PRODUCTS } from './types/const'
+import { getProductList, getProductOptions } from "./data/api";
 
 function App() {
-  const initialState : AppState = {
-    products: []
-  }
+
   const [state, dispatch] = useReducer(ProductReducer, initialState)
 
   useEffect(() => {
-    dispatch({type:INIT_PRODUCTS, payload:null})
-  },[])
+    
+    getProductList().then(({data}) => {
+      dispatch({
+        type: INIT_PRODUCTS,
+        payload: data.products
+      })
+    })
+    getProductOptions({categories:["Best Seller"]}).then(({data}) => {
+      dispatch({
+        type: INIT_FEATURED_PRODUCTS,
+        payload: data.products
+      })
+    })
+
+  }, []);
 
 
   return (

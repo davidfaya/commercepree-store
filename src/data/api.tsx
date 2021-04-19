@@ -2,10 +2,11 @@ import axios, { AxiosInstance } from "axios";
 
 let apiToken : string | ( null | undefined )= '';
 let client: AxiosInstance;
-const apiUrl : string | undefined = "http://localhost:1234"//process.env.REACT_ATT_API_ENDPOINT;
+const apiUrl : string | undefined = "http://localhost:1234"   //process.env.REACT_APP_API_ENDPOINT; //
 
 
 export const init = (moreHeaders?:any) => {
+    //debugger
     apiToken = window.localStorage.getItem('ShopSpreeApiToken');
 
     let headers = {
@@ -25,9 +26,15 @@ export const init = (moreHeaders?:any) => {
     return client;
 };
 
-export const getProductList = (params?:any) => {
-    return init().get("/products", { params: params });
+export const getProductList = () => {
+    return init().get(`/products`);
 };
+
+export const getProductOptions = (options:ProductsFilterOptions) => {
+    const {page, size, categories} = options
+    const categoryQuery = `&category=${categories ? categories.join(`&category=`) : ''}`
+    return init().get(`/products?page${page || ''}&size=${size || ''}${categoryQuery}`)
+}
 
 export const updateAddProduct = (data:any) => {
     return init().post("/product", data);

@@ -1,6 +1,3 @@
-const INIT_PRODUCTS = "INIT_PRODUCTS";
-const ADD_PRODUCT = "ADD_PRODUCT";
-
 interface ProductModel {
   id: string;
   category: string[];
@@ -22,6 +19,19 @@ interface ProductCardProps {
 }
 interface AppState {
   products: ProductModel[];
+  featuredProducts: ProductModel[];
+  productFilters: ProductFilters;
+}
+interface ProductsFilterOptions {
+  page?: number;
+  size?: number;
+  categories?: string[];
+}
+
+interface ProductFilters {
+  gender: string[];
+  category: string[];
+  trends: string[];
 }
 
 interface AppContextModel {

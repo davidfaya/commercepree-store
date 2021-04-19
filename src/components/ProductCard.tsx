@@ -5,8 +5,8 @@ import { Card, Image } from 'semantic-ui-react'
 const ProductCard:React.FC<ProductCardProps> = ({ name, url }) => {
     return (
         <Card>
-            <Image src={url} />
-                <Card.Content>
+             <Image centered size="small" raise="true" src={url} />
+                <Card.Content >
                 <Card.Header>{name}l</Card.Header>
                 
                 <Card.Description>
