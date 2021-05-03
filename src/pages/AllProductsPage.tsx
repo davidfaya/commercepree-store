@@ -1,4 +1,4 @@
-import React, {useContext,useState} from "react";
+import React, {useContext,useState, useEffect} from "react";
 import { AppContext } from "../context/appContext";
 import ProductCard from '../components/ProductCard'
 import SidePanel from '../components/SidePanel'
@@ -9,16 +9,41 @@ import {
   Grid,
   Header,
   Icon,
+  Button,
   Segment,
   Sidebar,
+  Pagination,
+  PaginationProps,
 } from 'semantic-ui-react'
+import { getProductOptions } from '../data/api'
+import {UpdateProducts} from '../types/action'
+
 var _ = require('lodash/core');
 
 const AllProductsPage = () => {
-
-  const {state} = useContext(AppContext)
+  
+  const {state, dispatch} = useContext(AppContext)
   const [sideBarVisible, setSideBarVisible] = useState(false)
+  const [pageState, setPageState] = useState(1)
+  const [numPages, setNumPages] = useState(5)
 
+  useEffect(() => {
+    console.log(state)
+    getProductOptions({ page: pageState, 
+                        size: state.productFilters.size,
+                        categories:state.productFilters.categories}).then(({data}) => {
+        console.log(data)
+        setNumPages(data.totalPages)
+        dispatch(UpdateProducts(data.products))
+      })
+  }, [pageState]);
+
+  const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, 
+    {activePage}: PaginationProps) => {
+      const newPage:number = activePage as number;
+      setPageState(newPage)
+    }
+  
   return (
     <Grid columns={1}>
       
@@ -28,11 +53,9 @@ const AllProductsPage = () => {
             as={Container}
             animation='push'
             icon='labeled'
-            inverted
             onHide={() => setSideBarVisible(false)}
-            vertical
             visible={sideBarVisible}
-            width='wide'
+            width='thin'
           >
             <SidePanel/>
           </Sidebar>
@@ -40,11 +63,10 @@ const AllProductsPage = () => {
           <Sidebar.Pusher>
             <Segment basic>
 
-              <Checkbox
-                checked={sideBarVisible}
-                label={{ children: <code>visible</code> }}
-                onChange={(e, data) => setSideBarVisible(data.checked as boolean)}
-              />
+              <Button basic onClick={() => setSideBarVisible(!sideBarVisible)}>
+                {!sideBarVisible && <Icon disabled name='angle double right' />}
+                {sideBarVisible && <Icon disabled name='angle double left' />}
+              </Button>
               <Header as='h2' icon
                 textAlign='center'
                 style={{marginBottom:'1em'}} >
@@ -61,6 +83,13 @@ const AllProductsPage = () => {
                     )
                 })}
               </Card.Group>
+            </Segment>
+            <Segment>
+            <Pagination
+              activePage={pageState}
+              onPageChange={handlePaginationChange}
+              totalPages={state.productFilters.numPages as number}
+            />
             </Segment>
           </Sidebar.Pusher>
         </Sidebar.Pushable>

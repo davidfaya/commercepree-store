@@ -10,9 +10,9 @@ export const init = (moreHeaders?:any) => {
     apiToken = window.localStorage.getItem('ShopSpreeApiToken');
 
     let headers = {
-    ...moreHeaders,
-    Accept: "application/json",
-    Authorization: "",
+        ...moreHeaders,
+        Accept: "application/json",
+        Authorization: "",
     };
 
     if (apiToken) {
@@ -31,9 +31,14 @@ export const getProductList = () => {
 };
 
 export const getProductOptions = (options:ProductsFilterOptions) => {
+    console.log("FILTER PRODUCTS - ", options)
     const {page, size, categories} = options
     const categoryQuery = `&category=${categories ? categories.join(`&category=`) : ''}`
-    return init().get(`/products?page${page || ''}&size=${size || ''}${categoryQuery}`)
+    return init().get(`/products?page=${page || ''}&size=${size || ''}${categoryQuery}`)
+}
+
+export const getProductFilters = () => {
+    return init().get(`/product-filters`)
 }
 
 export const updateAddProduct = (data:any) => {

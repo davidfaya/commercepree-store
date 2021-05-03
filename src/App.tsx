@@ -7,7 +7,7 @@ import {ProductReducer, AppContext, initialState} from './context/appContext'
 import { ROUTE } from './types/route';
 import  TopNav  from './components/TopNav'
 import { Container } from 'semantic-ui-react'
-import { INIT_PRODUCTS, INIT_FEATURED_PRODUCTS } from './types/const'
+import { INIT_PRODUCTS, InitFeatures, UpdateProductFilters } from './types/action'
 import { getProductList, getProductOptions } from "./data/api";
 
 function App() {
@@ -22,11 +22,8 @@ function App() {
         payload: data.products
       })
     })
-    getProductOptions({categories:["Best Seller"]}).then(({data}) => {
-      dispatch({
-        type: INIT_FEATURED_PRODUCTS,
-        payload: data.products
-      })
+    getProductOptions({categories:["Best Seller"], size:3}).then(({data}) => {
+      dispatch(InitFeatures(data.products))
     })
 
   }, []);

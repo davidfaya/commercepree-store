@@ -1,41 +1,62 @@
-import { getProductOptions } from "../data/api";
+export const INIT_PRODUCTS = "INIT_PRODUCTS";
+export const ADD_PRODUCT = "ADD_PRODUCT";
+export const INIT_FEATURED_PRODUCTS = "INIT_FEATURED_PRODUCTS";
+export const UPDATE_PRODUCT_FILTERS = "UPDATE_PRODUCTS_FILTERS";
+export const UPDATE_PRODUCTS = "FILTER_PRODUCT_OPTIONS";
 
 export interface Action {
   readonly type: string;
   readonly payload: any;
 }
 
-export const ADD_TODO_ITEM = "ADD_TODO_ITEM";
-export const TOGGLE_ITEM = "TOGGLE_ITEM";
-
 export interface AddProductAction extends Action {
   payload: {
     newProduct: ProductModel;
   };
 }
-
-export interface searchProductAction extends Action {
+export interface InitFeatureProductsAction extends Action {
   payload: {
-    searchResults: ProductModel[];
+    featureProducts: ProductModel[];
+  };
+}
+export interface UpdateProductFilterAction extends Action {
+  payload: {
+    filterOptions: ProductsFilterOptions;
+  };
+}
+export interface UpdateProductsAction extends Action {
+  payload: {
+    productList: ProductModel[];
   };
 }
 
 export const AddProduct = (newProduct: ProductModel): AddProductAction => ({
-  type: ADD_TODO_ITEM,
+  type: ADD_PRODUCT,
   payload: {
     newProduct: newProduct,
   },
 });
-
-export const SearchProduct = (
-  filterOptions: ProductsFilterOptions
-): searchProductAction => {
-  getProductOptions({ ...filterOptions }).then(({ data }) => {});
-
+export const InitFeatures = (featuredProducts: ProductModel[]): InitFeatureProductsAction => {
   return {
-    type: TOGGLE_ITEM,
+    type: INIT_FEATURED_PRODUCTS,
     payload: {
-      searchResults: [],
+      featureProducts: featuredProducts,
+    },
+  };
+};
+export const UpdateProductFilters = (options: ProductsFilterOptions): UpdateProductFilterAction => {
+  return {
+    type: UPDATE_PRODUCT_FILTERS,
+    payload: {
+      filterOptions: options,
+    },
+  };
+};
+export const UpdateProducts = (filteredList: ProductModel[]): UpdateProductsAction => {
+  return {
+    type: UPDATE_PRODUCTS,
+    payload: {
+      productList: filteredList,
     },
   };
 };

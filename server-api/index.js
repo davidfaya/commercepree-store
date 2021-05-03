@@ -42,6 +42,7 @@ app.get("/products", (req, res) => {
   let productsToReturn = [];
 
   if ((page && size) || size || category) {
+    
     let currentPage = 1;
     let currentSize = 0;
     const pageInt = parseInt(page) || 1;
