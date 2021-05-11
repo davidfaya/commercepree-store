@@ -19,12 +19,11 @@ const BestSellers : React.FC = () => {
             </Header>
             
             <Card.Group centered>
-                {state.featuredProducts.map(({title, variants, id})=> {
+                {state.featuredProducts.map((prod)=> {
                     return (
                     <ProductCard 
-                            key={id}
-                            url={variants[0].image}
-                            name={title}/>
+                            key={prod.id}
+                            product={prod}/>
                     )
                 })}
             </Card.Group>

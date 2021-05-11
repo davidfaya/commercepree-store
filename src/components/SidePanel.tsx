@@ -1,12 +1,15 @@
-import React, {useEffect, useState, useContext} from 'react'
-import { AppContext } from "../context/appContext";
-import {getProductFilters, getProductOptions} from '../data/api'
-import { Form,Accordion,Menu,AccordionTitleProps,CheckboxProps } from 'semantic-ui-react'
-import {  UpdateProducts, UpdateProductFilters } from '../types/action'
+import React, {useEffect, useState} from 'react'
+import {getProductFilters } from '../data/api'
+import { Form,Accordion,Menu,AccordionTitleProps } from 'semantic-ui-react'
+import {selectionCallback} from '../pages/ProductsPage'
 
-const SidePanel = () => {
+type Props = {
+    optionChange: selectionCallback
+  };
 
-    const {state, dispatch} = useContext(AppContext)
+const SidePanel = ({optionChange}:Props) => {
+
+    //const {state, dispatch} = useContext(AppContext)
 
     let filterState:ProductFilters = {
         gender: [],
@@ -25,33 +28,24 @@ const SidePanel = () => {
         getProductFilters().then(({data}) => {
             console.log(data)
             setFilters(data.productsFilters)
-            dispatch(UpdateProductFilters({
-                    categories: data.productsFilters.gender
-                        .concat(data.productsFilters.category, data.productsFilters.trends)}))
         })
     }, []);
 
     useEffect(() => {
         console.log(filtersOptions)
-        getProductOptions({categories:filtersOptions.categories,
-                            page: state.productFilters.page,
-                            size: state.productFilters.size }).then(({data}) => {
-            dispatch(UpdateProducts(data.products))
-            dispatch(UpdateProductFilters({ categories: filtersOptions.categories, 
-                                            numPages:data.totalPages }))
-          })
-    }, [filtersOptions]);
+        optionChange(filtersOptions.categories)
+    }, [filtersOptions,optionChange]);
 
     const handlePanelClick = (e:React.MouseEvent<HTMLDivElement, MouseEvent>, { index }:AccordionTitleProps) => {
         if (activeIdexes.includes(index as number)) 
-            setActiveIndexes(activeIdexes.filter(ind => ind != index))
+            setActiveIndexes(activeIdexes.filter(ind => ind !== index))
         else 
             setActiveIndexes([...activeIdexes, (index as number)])
     }
 
     const handleOptionClick = (option:string) => {
         if (filtersOptions.categories.includes(option as string)) 
-            setFiltersOptions({ categories: filtersOptions.categories.filter(opt => opt != option)})
+            setFiltersOptions({ categories: filtersOptions.categories.filter(opt => opt !== option)})
         else 
             setFiltersOptions({ categories: [...filtersOptions.categories, option]})
     }
@@ -119,5 +113,6 @@ const SidePanel = () => {
       </Accordion>
     )
 }
+
 
 export default SidePanel

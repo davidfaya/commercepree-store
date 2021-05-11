@@ -30,7 +30,7 @@ export const getProductList = () => {
     return init().get(`/products`);
 };
 
-export const getProductOptions = (options:ProductsFilterOptions) => {
+export const getFilteredProducs = (options:ProductsFilterOptions) => {
     console.log("FILTER PRODUCTS - ", options)
     const {page, size, categories} = options
     const categoryQuery = `&category=${categories ? categories.join(`&category=`) : ''}`

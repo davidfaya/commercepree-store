@@ -1,14 +1,14 @@
 import React , {useReducer, useEffect} from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import HomePage from './pages/HomePage';
-import AllProductsPage from './pages/AllProductsPage';
+import ProductsPage from './pages/ProductsPage';
 import CheckoutPage from './pages/CheckoutPage';
 import {ProductReducer, AppContext, initialState} from './context/appContext'
 import { ROUTE } from './types/route';
 import  TopNav  from './components/TopNav'
 import { Container } from 'semantic-ui-react'
 import { INIT_PRODUCTS, InitFeatures, UpdateProductFilters } from './types/action'
-import { getProductList, getProductOptions } from "./data/api";
+import { getProductList, getFilteredProducs } from "./data/api";
 
 function App() {
 
@@ -22,7 +22,7 @@ function App() {
         payload: data.products
       })
     })
-    getProductOptions({categories:["Best Seller"], size:3}).then(({data}) => {
+    getFilteredProducs({categories:["Best Seller"], size:3}).then(({data}) => {
       dispatch(InitFeatures(data.products))
     })
 
@@ -35,7 +35,7 @@ function App() {
       <Container>
         <TopNav />
         <Switch>
-          <Route component={AllProductsPage} path={ROUTE.ALL_PRODUCTS} />
+          <Route component={ProductsPage} path={ROUTE.ALL_PRODUCTS} />
           <Route component={CheckoutPage} path={ROUTE.CHECKOUT}/>
           <Route component={HomePage} path={ROUTE.HOME}/>
           <Redirect to={ROUTE.HOME}/>

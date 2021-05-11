@@ -13,10 +13,7 @@ interface ProductVariantModel {
   stock: number;
   size: number;
 }
-interface ProductCardProps {
-  url: string;
-  name: string;
-}
+
 
 interface ProductsFilterOptions {
   page?: number;
