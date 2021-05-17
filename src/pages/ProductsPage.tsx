@@ -13,8 +13,7 @@ import {
   Segment,
   Sidebar,
   Pagination,
-  PaginationProps,
-  CardProps
+  PaginationProps
 } from 'semantic-ui-react'
 import { getFilteredProducs } from '../data/api'
 import {UpdateProducts} from '../types/action'
@@ -59,10 +58,10 @@ const ProductsPage = () => {
       setPageNumber( newPage )
     }
   
-  
-  const handleOptionChange:selectionCallback = (options:string[]) => {
+
+  const handleOptionChange = useCallback((options:string[]) => {
     setSelectedOptions(options)
-  }
+  }, [])
 
   const closeProductModal:closeModalCallback = () => { 
     setModalOpen(false)
