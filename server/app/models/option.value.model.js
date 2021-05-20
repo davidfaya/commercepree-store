@@ -4,10 +4,10 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING
       },
       label: {
-        type: Sequelize.NUMBER
+        type: Sequelize.STRING
       },
       sort_order: {
-        type: Sequelize.NUMBER
+        type: Sequelize.INTEGER
       },
       value: {
         type: Sequelize.STRING

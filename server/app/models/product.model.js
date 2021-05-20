@@ -1,7 +1,7 @@
 module.exports = (sequelize, Sequelize) => {
     const Product = sequelize.define("product", {
       BIN: {
-        username: Sequelize.STRING
+        type: Sequelize.STRING
       },
       brand: {
         type: Sequelize.STRING
@@ -23,9 +23,6 @@ module.exports = (sequelize, Sequelize) => {
       },
       shipping_cost: {
         type: Sequelize.DECIMAL(10, 2)
-      },
-      height: {
-        type: Sequelize.STRING
       },
       height: {
         type: Sequelize.STRING

@@ -3,11 +3,8 @@ module.exports = (sequelize, Sequelize) => {
       display_name: {
         type: Sequelize.STRING
       },
-      product_id: {
-        type: Sequelize.NUMBER
-      },
       sort_order: {
-        type: Sequelize.NUMBER
+        type: Sequelize.INTEGER
       },
       type: {
         type: Sequelize.STRING
